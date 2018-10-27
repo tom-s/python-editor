@@ -10,7 +10,7 @@ const getContent = memoize(word => get(
 
 export const createHoverText = (monaco, model, position) => {
   const word = model.getWordAtPosition(position)
-  const contents = getContent(word.word)
+  const contents = getContent(get(word, 'word'))
   return contents
     ? ({
       //range: new monaco.Range(1, 1, model.getLineCount(), model.getLineMaxColumn(model.getLineCount())),

@@ -12,4 +12,4 @@ export const libraries = [{
 }]
 
 export const librariesKeywords = libraries.map(library => library.insertText)
-export const languageKeywords = get(language(), 'keywords', []).filter(keyword => !keyword.startsWith('_'))
+export const languageKeywords = get(language(librariesKeywords), 'keywords', []).filter(keyword => !keyword.startsWith('_'))

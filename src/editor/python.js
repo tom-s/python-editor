@@ -1,4 +1,4 @@
-export const conf = monaco => ({
+export const conf = (monaco, libraryKeywords) => ({
 	comments: {
 		lineComment: '#',
 		blockComment: ['\'\'\'', '\'\'\''],
@@ -37,7 +37,7 @@ export const conf = monaco => ({
 	}
 })
 
-export const language = () => ({
+export const language = (libraryKeywords) => ({
 	defaultToken: '',
 	tokenPostfix: '.python',
 	keywords: [
@@ -184,7 +184,10 @@ export const language = () => ({
 			{ include: '@whitespace' },
 			{ include: '@numbers' },
 			{ include: '@strings' },
-
+			...libraryKeywords.map(keyword => {
+				const reg = new RegExp(`${keyword}`, "g");
+				return [reg, 'library-import']
+			}),
 			[/[,:;]/, 'delimiter'],
 			[/[{}[\]()]/, '@brackets'],
 

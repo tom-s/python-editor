@@ -4,30 +4,17 @@ import MonacoEditor from 'react-monaco-editor'
 import { conf, language } from './editor/python'
 import { createDependencyProposals } from './editor/autocompletion'
 import { createHoverText } from './editor/hover'
+import { librariesKeywords } from './editor/common'
+import { defaultActivity } from './activities'
+import test from '../node_modules/monaco-editor/dev/vs/editor/editor.main.nls.fr'
+
+console.log("debug test", test)
 
 const LANGUAGE = 'python-custom'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      code: `import numpy as np
-import matplotlib.pyplot as plt
-
-def f(t):
-  return np.exp(-t) * np.cos(2*np.pi*t)
-
-t1 = np.arange(0.0, 5.0, 0.1)
-t2 = np.arange(0.0, 5.0, 0.02)
-
-plt.figure(1)
-plt.subplot(211)
-plt.plot(t1, f(t1), 'bo', t2, f(t2), 'k')
-
-plt.subplot(212)
-plt.plot(t2, np.cos(2*np.pi*t2), 'r--')
-plt.show()`
-    }
+  state = {
+    code: defaultActivity
   }
   editorWillMount(monaco) {
     monaco.languages.register({ 
@@ -36,7 +23,14 @@ plt.show()`
       aliases: ['Python', 'py'],
      })
     monaco.languages.setLanguageConfiguration(LANGUAGE, conf(monaco))
-    monaco.languages.setMonarchTokensProvider("python-custom", language(monaco))
+    monaco.languages.setMonarchTokensProvider("python-custom", language(librariesKeywords))
+    monaco.editor.defineTheme('python-theme', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'library-import', foreground: '3CB371', fontStyle: 'underline' }
+      ]
+  });
   }
 
   editorDidMount = (editor, monaco) => {
@@ -46,7 +40,39 @@ plt.show()`
     monaco.languages.registerHoverProvider(LANGUAGE, {
       provideHover: (model, position) => createHoverText(monaco, model, position)
     })
+
+    // Customize context menu
+    editor.addAction({
+      // An unique identifier of the contributed action.
+      id: 'lls',
+    
+      // A label of the action that will be presented to the user.
+      label: 'Vive lelivrescolaire.fr !',
+    
+      // An optional array of keybindings for the action.
+      keybindings: [],
+    
+      // A precondition for this action.
+      precondition: null,
+    
+      // A rule to evaluate on top of the precondition in order to dispatch the keybindings.
+      keybindingContext: null,
+    
+      contextMenuGroupId: 'navigation',
+    
+      contextMenuOrder: 1.5,
+    
+      // Method that will be executed when the action is triggered.
+      // @param editor The editor instance is passed in as a convinience
+      run: () => {
+        window.open('https://www.lelivrescolaire.fr')
+        return null;
+      }
+    });
+    
+    // Focus
     editor.focus()
+    
   }
   onChange = (newValue, e) => {
     //console.log('onChange', newValue, e)
@@ -55,21 +81,18 @@ plt.show()`
     const code = this.state.code
     const options = {
       selectOnLineNumbers: true,
-      overviewRulerLanes: 1
+      overviewRulerLanes: 1,
+      wordBasedSuggestions: false, // we do it ourselves
+      contextmenu: false // for mobile,
     }
-    const requireConfig = {
-      url: 'https://cdnjsfdsfds.cloudflare.com/ajax/libs/require.js/2.3.1/require.min.js',
-      paths: {
-        vs: 'https://as.alipayobjects.com/g/cicada/monaco-editor-mirror/0.6.1/min/vs'
-      }
-    }
+
     return (
       <div className="App">
         <MonacoEditor
           width="800"
           height="600"
           language="python-custom"
-          theme="vs-dark"
+          theme="python-theme"
           value={code}
           options={options}
           onChange={this.onChange}
