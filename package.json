@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "monaco-editor-webpack-plugin": "^1.5.4",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-monaco-editor": "^0.20.0",

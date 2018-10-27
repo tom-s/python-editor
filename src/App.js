@@ -38,6 +38,12 @@ class App extends Component {
       selectOnLineNumbers: true,
       overviewRulerLanes: 1
     }
+    const requireConfig = {
+      url: 'https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.1/require.min.js',
+      paths: {
+        vs: 'https://as.alipayobjects.com/g/cicada/monaco-editor-mirror/0.6.1/min/vs'
+      }
+    };
     return (
       <div className="App">
         <MonacoEditor
@@ -48,6 +54,7 @@ class App extends Component {
           value={code}
           options={options}
           onChange={this.onChange}
+          requireConfig={requireConfig}
           /*
           requireConfig={{
             'vs/nls' : {
