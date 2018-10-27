@@ -15,7 +15,7 @@ const generateKeywords = memoize((keywords, kind) => keywords.map(keyword => ({
 
 export const createDependencyProposals = (monaco, currentValue) => {
   // if we wanted to get rid of values between quotes we could try to filter on this regex: ("|'|_|[1-9]|[a-z]|"|')+
-  const currentWords = currentValue.match(/(_|[1-9]|[a-z])+/gi)
+  const currentWords = uniq(currentValue.match(/(_|[1-9]|[a-z])+/gi))
   const words = uniq(difference(currentWords, languageKeywords, librariesKeywords))
   return concat(
     generateKeywords(languageKeywords, monaco.languages.CompletionItemKind.Function),
