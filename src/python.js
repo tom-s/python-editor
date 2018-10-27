@@ -1,4 +1,4 @@
-export const conf = {
+export const conf = monaco => ({
 	comments: {
 		lineComment: '#',
 		blockComment: ['\'\'\'', '\'\'\''],
@@ -22,13 +22,12 @@ export const conf = {
 		{ open: '"', close: '"' },
 		{ open: '\'', close: '\'' },
   ],
-  /*
 	onEnterRules: [
 		{
 			beforeText: new RegExp("^\\s*(?:def|class|for|if|elif|else|while|try|with|finally|except|async).*?:\\s*$"),
-			action: { indentAction: _monaco.languages.IndentAction.Indent }
+			action: { indentAction: monaco.languages.IndentAction.Indent }
 		}
-	],*/
+	],
 	folding: {
 		offSide: true,
 		markers: {
@@ -36,9 +35,9 @@ export const conf = {
 			end: new RegExp("^\\s*#endregion\\b")
 		}
 	}
-};
+})
 
-export const language = {
+export const language = () => ({
 	defaultToken: '',
 	tokenPostfix: '.python',
 	keywords: [
@@ -245,4 +244,4 @@ export const language = {
 			[/.*$/, 'string', '@popall']
 		]
 	}
-};
+})
