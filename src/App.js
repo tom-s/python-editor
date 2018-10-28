@@ -1,15 +1,27 @@
 import React, { Component } from 'react'
+import random from 'lodash/random'
 import './App.css'
 import { defaultActivity } from './activities'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { 
-      module: null,
-      isTouch: !matchMedia('(pointer:fine)').matches
-    };
+  state = {
+    module: null,
+    isTouch: !matchMedia('(pointer:fine)').matches,
+    error: null
   }
+  run = () => {
+    const errorLineNumber = random(0, 20)
+    const error = errorLineNumber < 5
+      ? null
+      : {
+        msg: `An error occured at line ${errorLineNumber} -> Undefined random error`,
+        lineNumber: errorLineNumber
+      }
+    this.setState({
+      error
+    })
+  }
+
   componentDidMount() {
     const { isTouch } = this.state
     const path = isTouch
@@ -19,10 +31,11 @@ class App extends Component {
       .then(module => this.setState({ module: module.default }))
   }
   render() {
-    const { module: Component } = this.state
+    const { module: Component, error } = this.state
     return(
       <div>
-        {Component && <Component defaultValue={defaultActivity} />}
+        <button onClick={this.run}>Run</button>
+        {Component && <Component defaultValue={defaultActivity} error={error} />}
       </div>
     )
   }
