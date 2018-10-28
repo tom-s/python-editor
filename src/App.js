@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import random from 'lodash/random'
-import './App.css'
 import { defaultActivity } from './activities'
+import './App.css'
 
 class App extends Component {
   state = {

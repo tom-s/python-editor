@@ -124,10 +124,10 @@ class Editor extends Component {
           severity: this.monaco.MarkerSeverity.Error
         }]
         : []
-      this.monaco.editor.setModelMarkers(this.editor.getModel(), 'test', modelError)
+      this.monaco.editor.setModelMarkers(this.editor.getModel(), 'error', modelError)
     }
-    
   }
+  
   onChange = (newValue, e) => {
     //console.log('onChange', newValue, e)
   }
